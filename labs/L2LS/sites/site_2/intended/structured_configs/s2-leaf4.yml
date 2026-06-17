@@ -19,58 +19,58 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: MLAG_s1-leaf4_Ethernet1
+  description: MLAG_s2-leaf3_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: s1-leaf4
+    peer: s2-leaf3
     peer_interface: Ethernet1
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_s1-leaf4_Ethernet6
+  description: MLAG_s2-leaf3_Ethernet6
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: s1-leaf4
+    peer: s2-leaf3
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet2
-  description: L2_s1-spine1_Ethernet4
+  description: L2_s2-spine1_Ethernet5
   shutdown: false
   channel_group:
     id: 2
     mode: active
   metadata:
-    peer: s1-spine1
-    peer_interface: Ethernet4
+    peer: s2-spine1
+    peer_interface: Ethernet5
     peer_type: l3spine
 - name: Ethernet3
-  description: L2_s1-spine2_Ethernet4
+  description: L2_s2-spine2_Ethernet5
   shutdown: false
   channel_group:
     id: 2
     mode: active
   metadata:
-    peer: s1-spine2
-    peer_interface: Ethernet4
+    peer: s2-spine2
+    peer_interface: Ethernet5
     peer_type: l3spine
 - name: Ethernet4
-  description: SERVER_s1-host2_eth1
+  description: SERVER_s2-host2_eth2
   shutdown: false
   channel_group:
     id: 4
     mode: active
   metadata:
-    peer: s1-host2
-    peer_interface: eth1
+    peer: s2-host2
+    peer_interface: eth2
     peer_type: server
     peer_key: servers
-    port_profile: PP-VLAN20
-hostname: s1-leaf3
+    port_profile: PP-VLAN40
+hostname: s2-leaf4
 ip_domain_lookup:
   source_interfaces:
   - name: Management0
@@ -85,7 +85,7 @@ local_users:
 - name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$0b9d400615ad59ef$cFf0Mz.TNeHSG/DLX31jnV7P/wFQ23IdNfK6QRcb1NGuWXk.6fmWOSPd8jsrx4ClbUf3.zLmmzVmvX1f8g1tC1
+  sha512_password: $6$e171b8f339ecacc6$84OAlEkN8Grix9JHaPFl/rqvvhFZxNyB7em/4hbwEC/pxU2nLEqJplI0FSM6MLm/lGZhyOJKJp5aNt3ZgMiyw1
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWlP0b3yWCAPWC5K5vWhScgfQZwtA2cgRJPa3+vi8p1OQ3b0074wqpPyaooHYVE/+X9yYOV6cdN8wr8a4NQ5dQvf5K24SJd8R5RWWFlCgChD85BLX79rFZeKf7/WZdPjGZFZIJsnmZm7hq5lUo1DVKaeptEzYYTpbaWFWY2Px59uAQe0/BVgHrttbRWEf5txvIr/+13s/HXkN6w1pg8dd+ixwip1HpvoSwRt6+ATjUIJ88NBgFyvz4KKno0SsKz2Flpx7Uo86KifHPNcoVwfad1or20PA1NXNKvo5kembLbHN3eke7DJIACLW+aVm79RjMUQhrzWVJL4uz26ES+zsb
     arista@avd-workshop-brisbane-10-dec73129-eos
 management_api_http:
@@ -97,17 +97,17 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: default
-  ip_address: 192.168.0.14/24
+  ip_address: 192.168.0.25/24
   type: oob
   gateway: 192.168.0.1
 metadata:
   is_deployed: true
   platform: cEOS
-  fabric_name: SITE1_FABRIC
+  fabric_name: SITE2_FABRIC
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094
-  peer_address: 10.1.253.1
+  peer_address: 10.2.253.0
   peer_link: Port-Channel1
 ntp:
   local_interface:
@@ -120,7 +120,7 @@ ntp:
   vrf: default
 port_channel_interfaces:
 - name: Port-Channel1
-  description: MLAG_s1-leaf4_Port-Channel1
+  description: MLAG_s2-leaf3_Port-Channel1
   shutdown: false
   switchport:
     enabled: true
@@ -136,16 +136,16 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: '20'
+      allowed_vlan: '40'
 - name: Port-Channel4
-  description: SERVER_s1-host2
+  description: SERVER_s2-host2
   shutdown: false
   mlag: 4
   spanning_tree_portfast: edge
   switchport:
     enabled: true
     mode: access
-    access_vlan: 20
+    access_vlan: 40
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -162,7 +162,7 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ip_address: 10.1.253.0/31
+  ip_address: 10.2.253.1/31
   mtu: 1500
   no_autostate: true
 vlan_internal_order:
@@ -178,8 +178,8 @@ vlans:
   metadata:
     tenants:
     - system
-- id: 20
-  name: Twenty
+- id: 40
+  name: Forty
   metadata:
     tenants:
     - MY_FABRIC
