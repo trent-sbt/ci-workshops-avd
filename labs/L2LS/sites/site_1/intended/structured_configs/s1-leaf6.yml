@@ -1,0 +1,187 @@
+aaa_authorization:
+  exec:
+    default: local
+aaa_root:
+  disabled: true
+banners:
+  motd: 'You shall not pass. Unless you are authorized. Then you shall pass.
+
+    EOF
+
+    '
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.0.5:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management0
+  cvvrf: default
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+dns_domain: atd.lab
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: MLAG_s1-leaf5_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: s1-leaf5
+    peer_interface: Ethernet1
+    peer_type: mlag_peer
+- name: Ethernet6
+  description: MLAG_s1-leaf5_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: s1-leaf5
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
+- name: Ethernet2
+  description: L2_s1-spine1_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 2
+    mode: active
+  metadata:
+    peer: s1-spine1
+    peer_interface: Ethernet10
+    peer_type: l3spine
+- name: Ethernet3
+  description: L2_s1-spine2_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 2
+    mode: active
+  metadata:
+    peer: s1-spine2
+    peer_interface: Ethernet10
+    peer_type: l3spine
+hostname: s1-leaf6
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management0
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.168.0.1
+local_users:
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$64974cb64e3e93e9$3budHxQw1R.LqaHCL4DpdmBVZJB6FyoW5B9TSoqK5TbdQ5x/6hDiIC9FwAm4sbqSwLweeRVrrB5800/KAquHB/
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWlP0b3yWCAPWC5K5vWhScgfQZwtA2cgRJPa3+vi8p1OQ3b0074wqpPyaooHYVE/+X9yYOV6cdN8wr8a4NQ5dQvf5K24SJd8R5RWWFlCgChD85BLX79rFZeKf7/WZdPjGZFZIJsnmZm7hq5lUo1DVKaeptEzYYTpbaWFWY2Px59uAQe0/BVgHrttbRWEf5txvIr/+13s/HXkN6w1pg8dd+ixwip1HpvoSwRt6+ATjUIJ88NBgFyvz4KKno0SsKz2Flpx7Uo86KifHPNcoVwfad1or20PA1NXNKvo5kembLbHN3eke7DJIACLW+aVm79RjMUQhrzWVJL4uz26ES+zsb
+    arista@avd-workshop-brisbane-10-dec73129-eos
+logging:
+  vrfs:
+  - name: default
+    source_interface: Management0
+    hosts:
+    - name: 10.200.0.108
+      protocol: udp
+    - name: 10.200.1.108
+      protocol: udp
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
+management_interfaces:
+- name: Management0
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.29/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: cEOS
+  fabric_name: SITE1_FABRIC
+mlag_configuration:
+  domain_id: RACK3
+  local_interface: Vlan4094
+  peer_address: 10.1.253.0
+  peer_link: Port-Channel1
+ntp:
+  local_interface:
+    name: Management0
+    vrf: default
+  servers:
+  - name: 192.168.0.1
+    iburst: true
+    preferred: true
+  vrf: default
+port_channel_interfaces:
+- name: Port-Channel1
+  description: MLAG_s1-leaf5_Port-Channel1
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+- name: Port-Channel2
+  description: L2_SPINES_Port-Channel9
+  shutdown: false
+  mlag: 2
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 10,20
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 32768
+  no_spanning_tree_vlan: '4094'
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.1.253.1/31
+  mtu: 1500
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 10
+  name: Ten
+  metadata:
+    tenants:
+    - MY_FABRIC
+- id: 20
+  name: Twenty
+  metadata:
+    tenants:
+    - MY_FABRIC
+vrfs:
+- name: default
+  ip_routing: false
